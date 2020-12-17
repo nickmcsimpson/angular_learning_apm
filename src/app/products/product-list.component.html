@@ -1,7 +1,19 @@
 <div class="card">
+
+    <!-- One way binding of variable -->
     <div class="card-header">
-        Product List
+        {{pageTitle}}
     </div>
+
+    <!-- Structural Directives
+        *ngIf: added or removed from DOM
+            from BrowserModule
+
+        *ngFor: looping
+            for...of for iterable objects
+            for...in for properties (index) Not angular
+    -->
+
 
     <div class="card-body">
         <div class="row">
@@ -16,7 +28,8 @@
             <h4>Filtered By:</h4>
         </div>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table"
+                *ngIf='products && products.length'>
                 <thead>
                     <tr>
                         <th>
@@ -32,7 +45,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <tr *ngFor="let product of products">
+                        <td></td>
+                        <td>{{ product.productName }}</td>
+                        <td>{{ product.productCode }}</td>
+                        <td>{{ product.releaseDate }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.starRating }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
