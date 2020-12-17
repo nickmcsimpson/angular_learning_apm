@@ -5,10 +5,11 @@ import {Component} from '@angular/core'
     templateUrl: './product-list.component.html',//relative path
 })
 export class ProductListComponent {
-    //TypeScript can infer type from these pre-defined variables
+    // TypeScript can infer type from these pre-defined variables
     pageTitle: string = 'Product List!';
     imageWidth: number = 50;
     imageMargin: number = 2;
+    showImage: boolean = false;
     products: any[] = [
         {
           "productId": 1,
@@ -31,4 +32,10 @@ export class ProductListComponent {
           "imageUrl": "assets/images/garden_cart.png"
         }
     ];
+
+    // No return type or keywords for function
+    toggleImage(): void {
+        this.showImage = !this.showImage;
+    }
+    // Change detection will automatically reevaluate the bound displays
 }
