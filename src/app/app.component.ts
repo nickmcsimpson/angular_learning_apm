@@ -4,13 +4,17 @@ import { Component } from "@angular/core";
 @Component({
   // Metadata
   selector: 'pm-root',
-    // View layout with file:
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-    // View Layout here
-  /*template: `
-  * <div>HTML</div>
-  */
+    // View
+      // Linked Template
+  // templateUrl: './app.component.html',
+  // styleUrls: ['./app.component.css']
+    // Inline Template
+  template: `
+   <div><h2>{{pageTitle}}</h2>
+      <pm-products></pm-products>
+   </div>
+  `
+  // Back ticks ES 2015 multi-line string
 })
 export class AppComponent {
   // title = 'Angular: Getting Started';
