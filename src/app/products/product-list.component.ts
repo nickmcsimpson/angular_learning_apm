@@ -5,7 +5,10 @@ import {Component} from '@angular/core'
     templateUrl: './product-list.component.html',//relative path
 })
 export class ProductListComponent {
-    pageTitle: string = 'Product List!'
+    //TypeScript can infer type from these pre-defined variables
+    pageTitle: string = 'Product List!';
+    imageWidth: number = 50;
+    imageMargin: number = 2;
     products: any[] = [
         {
           "productId": 1,

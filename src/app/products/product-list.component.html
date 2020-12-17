@@ -1,6 +1,6 @@
 <div class="card">
 
-    <!-- One way binding of variable -->
+    <!-- One way binding of variable using interpolation-->
     <div class="card-header">
         {{pageTitle}}
     </div>
@@ -46,7 +46,14 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let product of products">
-                        <td></td>
+                        <td>
+                            <!-- Using Property Binding to reference variables -->
+                            <img [src]='product.imageUrl'
+                                [title]='product.productName'
+                                [style.width.px]='imageWidth'
+                                [style.margin.px]='imageMargin'
+                            >
+                        </td>
                         <td>{{ product.productName }}</td>
                         <td>{{ product.productCode }}</td>
                         <td>{{ product.releaseDate }}</td>
