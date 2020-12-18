@@ -14,6 +14,7 @@ export class ProductListComponent implements OnInit {
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = false;
+    errorMessage: string;
     // listFilter: string = 'cart';
 
     // Use Getter and Setter instead
@@ -57,8 +58,21 @@ export class ProductListComponent implements OnInit {
     // Interface method 
     ngOnInit(): void {
         // Call service to get products list
-        this.products = this.productService.getProducts();
-        this.filteredProducts = this.products;
+        this.productService.getProducts().subscribe({
+            // Stream steps old syntax:
+            next: products => {
+                this.products = products;
+                this.filteredProducts = this.products;
+            },
+            error: err => this.errorMessage = err
+                // Sugar only used if not needing to use the variable
+            // next(products) {console.log(products)},
+            // WARN: This does not do what the arrow function above does,
+                // 'this' will be function scoped and not to our class vars
+            // error(err) {this.errorMessage = err}
+            // End function optional
+        });
+        
         console.log('In OnInit');
     }
 
