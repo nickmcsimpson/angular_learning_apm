@@ -57,7 +57,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products">
+                    <!-- 
+                        Pipe could be used to filter the product
+                        but these perform poorly. Instead use component
+                        logic
+                     -->
+                    <tr *ngFor="let product of filteredProducts">
                         <td>
                             <!-- Using Property Binding to reference variables -->
                             <img *ngIf='showImage' 
@@ -68,7 +73,8 @@
                             >
                         </td>
                         <td>{{ product.productName }}</td>
-                        <td>{{ product.productCode | lowercase }}</td>
+                        <!-- Custom Pipe -->
+                        <td>{{ product.productCode | lowercase | convertToSpaces:'-'}}</td>
                         <td>{{ product.releaseDate }}</td>
                         <!-- Pipe 
                             Example with parameters -->
