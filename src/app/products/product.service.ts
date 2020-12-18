@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { IProduct } from "./product";
 import { Observable, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { catchError, filter, map, tap } from "rxjs/operators";
 
 
 @Injectable({
@@ -27,6 +27,13 @@ export class ProductService {
         );// Async
     }
     // Not going to work without a subscription by an Observer
+
+    getProductById(id: number): Observable<IProduct | undefined> {
+        return this.getProducts()
+          .pipe(
+            map((products: IProduct[]) => products.find(p => p.productId === id))
+          );
+      }
 
     // Exception Handling:
         // tap let's us look at the emitted values of stream as they come in
