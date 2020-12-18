@@ -79,7 +79,13 @@
                         <!-- Pipe 
                             Example with parameters -->
                         <td>{{ product.price | currency:'USD':'symbol':'1.2-2' | lowercase }}</td>
-                        <td>{{ product.starRating }}</td>
+                        <!-- <td>{{ product.starRating }}</td> -->
+                        <td>
+                            <!-- If star rating changes, the star display will change -->
+                            <pm-star [rating]='product.starRating'
+                                (ratingClicked)='onRatingClicked($event)'
+                            ></pm-star>
+                        </td>
                     </tr>
                 </tbody>
             </table>

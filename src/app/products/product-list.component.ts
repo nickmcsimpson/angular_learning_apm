@@ -55,6 +55,11 @@ export class ProductListComponent implements OnInit {
         this.listFilter = 'cart';
     }
 
+    // Event Handling
+    onRatingClicked(message: string): void {
+        this.pageTitle = 'Product List: ' + message;
+    }
+
     // No return type or keywords for function
     toggleImage(): void {
         this.showImage = !this.showImage;
