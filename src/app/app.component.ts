@@ -22,6 +22,8 @@ import { Component } from "@angular/core";
    </div>   
   `
   // Back ticks ES 2015 multi-line string
+
+  // [routerLink] uses routing from module config
 })
 export class AppComponent {
   // title = 'Angular: Getting Started';
