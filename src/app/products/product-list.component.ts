@@ -72,13 +72,19 @@ export class ProductListComponent implements OnInit {
             // error(err) {this.errorMessage = err}
             // End function optional
         });
-        
-        console.log('In OnInit');
     }
 
     performFilter(filterBy: string): IProduct[] {
         filterBy = filterBy.toLocaleLowerCase();
         return this.products.filter((product: IProduct) => 
                 product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+    }
+
+    // Checks both the product name and tags
+    performFilter2(filterBy: string): IProduct[] {
+        filterBy = filterBy.toLocaleLowerCase();
+        return this.products.filter((product: IProduct) =>
+        product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1 ||
+            (product.tags && product.tags.some(tag => tag.toLocaleLowerCase().indexOf(filterBy) !== -1)));
     }
 }

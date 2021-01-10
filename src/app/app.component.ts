@@ -6,24 +6,20 @@ import { Component } from "@angular/core";
   selector: 'pm-root',
     // View
       // Linked Template
-  // templateUrl: './app.component.html',
+  templateUrl: './app.component.html',
   // styleUrls: ['./app.component.css']
     // Inline Template
-  template: `
-   <nav class='navbar navbar-expand navbar-light bg-light'>
-    <a class='navbar-brand'>{{pageTitle}}</a>
-    <ul class='nav nav-pills'>
-      <li><a class='nav-link' [routerLink]="['/welcome']">Home</a></li>
-      <li><a class='nav-link' [routerLink]="['/products']">Product List</a></li>
-    </ul>
-   </nav>
-   <div class='container'>
-    <router-outlet></router-outlet>
-   </div>   
-  `
+  // template: `
+  //  <nav class='navbar navbar-expand navbar-light bg-light'>
+  //  </nav>
+  //  <div class='container'>
+  //   <router-outlet></router-outlet>
+  //  </div>   
+  // `,
   // Back ticks ES 2015 multi-line string
 
   // [routerLink] uses routing from module config
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   // title = 'Angular: Getting Started';

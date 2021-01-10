@@ -43,9 +43,8 @@
                             <!-- Event Binding
                                     defined list of DOM/Web events
                             -->
-                            <button class="btn btn-primary"
-                                (click)='toggleImage()'
-                            >
+                            <button class="btn btn-outline-primary btn-sm"
+                                (click)='toggleImage()'>
                                 {{showImage ? 'Hide' : 'Show'}} Image
                             </button>
                         </td>
@@ -54,6 +53,7 @@
                         <th>Available</th>
                         <th>Price</th>
                         <th>5 Star Rating</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,14 +65,17 @@
                     <tr *ngFor="let product of filteredProducts">
                         <td>
                             <!-- Using Property Binding to reference variables -->
-                            <img *ngIf='showImage' 
+                            <img *ngIf='showImage && product.imageUrl' 
                                 [src]='product.imageUrl'
                                 [title]='product.productName'
                                 [style.width.px]='imageWidth'
-                                [style.margin.px]='imageMargin'
-                            >
+                                [style.margin.px]='imageMargin'>
                         </td>
-                        <td><a [routerLink]="['/products', product.productId]">{{ product.productName }}</a></td>
+                        <td>
+                            <a [routerLink]="['/products', product.id]">
+                                {{ product.productName }}
+                            </a>
+                        </td>
                         <!-- Custom Pipe -->
                         <td>{{ product.productCode | lowercase | convertToSpaces:'-'}}</td>
                         <td>{{ product.releaseDate }}</td>
@@ -86,6 +89,12 @@
                                 (ratingClicked)='onRatingClicked($event)'
                             ></pm-star>
                         </td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm"
+                                    [routerLink]="['/products', product.id, 'edit']">
+                              Edit
+                            </button>
+                          </td>
                     </tr>
                 </tbody>
             </table>
