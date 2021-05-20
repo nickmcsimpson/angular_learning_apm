@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 
+import { AuthService } from './user/auth.service';
+
 // Decorator
 @Component({
   // Metadata
@@ -14,7 +16,7 @@ import { Component } from "@angular/core";
   //  </nav>
   //  <div class='container'>
   //   <router-outlet></router-outlet>
-  //  </div>   
+  //  </div>
   // `,
   // Back ticks ES 2015 multi-line string
 
@@ -24,7 +26,25 @@ import { Component } from "@angular/core";
 export class AppComponent {
   // title = 'Angular: Getting Started';
   // Property in TypeScript
-  pageTitle: string = 'Acme Product Management'
+  pageTitle: string = 'Acme Product Management';
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
+
+  get userName(): string {
+    if (this.authService.currentUser) {
+      return this.authService.currentUser.userName;
+    }
+    return '';
+  }
+
+  constructor(private authService: AuthService) { }
+
+  logOut(): void {
+    this.authService.logout();
+    console.log('Log out');
+  }
 }
 
 //Index.html holds all the scripts for launching the angular app

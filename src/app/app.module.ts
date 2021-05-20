@@ -5,6 +5,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+// Imports for loading & configuring the in-memory web api
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { ProductData } from './products/product-data';
 
 import { AppComponent } from './app.component';
 // import { ProductListComponent } from './products/product-list.component';
@@ -13,7 +16,11 @@ import { AppComponent } from './app.component';
 // import { ProductDetailComponent } from './products/product-detail.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { ProductDetailGuard } from './products/product-detail.guard';
-import { ProductModule } from './products/product.module'
+import { PageNotFoundComponent } from './page-not-found.component';
+
+import { ProductModule } from './products/product.module';
+import { MessageModule } from './messages/message.module';
+import {UserModule} from './user/user.module';
 
 // Model Decorator
 @NgModule({
@@ -26,6 +33,7 @@ import { ProductModule } from './products/product.module'
     // StarComponent,
     // ProductDetailComponent, //Added automatically with Angular CLI creation
     WelcomeComponent,
+    PageNotFoundComponent,
   ],
   // External Modules
   imports: [
@@ -37,7 +45,7 @@ import { ProductModule } from './products/product.module'
       // More specific first
     RouterModule.forRoot([
       // { path: 'products', component: ProductListComponent},
-      // { path: 'products/:id', 
+      // { path: 'products/:id',
       //   canActivate: [ProductDetailGuard],
       //   component: ProductDetailComponent},
       { path: 'welcome', component: WelcomeComponent},
@@ -48,6 +56,8 @@ import { ProductModule } from './products/product.module'
     ProductModule, // AUTO import with CLI
     // If you want to use hash style routing instead:
     // RouterModule.forRoot([], { useHash: true })
+    UserModule,
+    MessageModule
   ],
   // Startup component (contains selector defined in index.html)
   bootstrap: [AppComponent]

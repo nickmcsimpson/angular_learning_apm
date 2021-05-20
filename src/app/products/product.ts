@@ -1,13 +1,19 @@
-export interface IProduct {
-    id: number;
-    productName: string;
-    productCode: string;
-    tags?: string[];
-    releaseDate: string;
-    price: number;
-    description: string;
-    starRating: number;
-    imageUrl: string;
+export interface Product {
+  id: number;
+  productName: string;
+  productCode: string;
+  category?: string;
+  tags?: string[];
+  releaseDate: string;
+  price: number;
+  description: string;
+  starRating: number;
+  imageUrl: string;
+}
+
+export interface ProductResolved {
+  product: Product;
+  error?: any;
 }
 
 // Implement interface with class
@@ -19,7 +25,7 @@ export interface IProduct {
 //                 public description: string,
 //                 public price: number,
 //                 public starRating: number,
-//                 public imageUrl: string) {        
+//                 public imageUrl: string) {
 //     }
 
 //     calculateDiscount(percent: number): number {

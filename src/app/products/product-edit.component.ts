@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, fromEvent, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { IProduct } from './product';
+import { Product } from './product';
 import { ProductService } from './product.service';
 
 import { NumberValidators } from '../shared/number.validator';
@@ -21,7 +21,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   errorMessage: string;
   productForm: FormGroup;
 
-  product: IProduct;
+  product: Product;
   private sub: Subscription;
 
   // Use with the generic validation message class
@@ -110,12 +110,12 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   getProduct(id: number): void {
     this.productService.getProductById(id)
       .subscribe({
-        next: (product: IProduct) => this.displayProduct(product),
+        next: (product: Product) => this.displayProduct(product),
         error: err => this.errorMessage = err
       });
   }
 
-  displayProduct(product: IProduct): void {
+  displayProduct(product: Product): void {
     if (this.productForm) {
       this.productForm.reset();
     }

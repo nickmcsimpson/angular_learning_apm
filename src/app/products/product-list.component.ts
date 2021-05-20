@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { IProduct } from './product'
+import { Product } from './product'
 import { ProductService } from './product.service'
 
 @Component({
@@ -27,9 +27,9 @@ export class ProductListComponent implements OnInit {
         this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
     }
 
-    
-    filteredProducts: IProduct[];
-    products: IProduct[];
+
+    filteredProducts: Product[];
+    products: Product[];
 
     // Dependency Injection: Product service (verbose)
     // private _productService
@@ -55,7 +55,7 @@ export class ProductListComponent implements OnInit {
     }
     // Change detection will automatically reevaluate the bound displays
 
-    // Interface method 
+    // Interface method
     ngOnInit(): void {
         // Call service to get products list
         this.productService.getProducts().subscribe({
@@ -74,16 +74,16 @@ export class ProductListComponent implements OnInit {
         });
     }
 
-    performFilter(filterBy: string): IProduct[] {
+    performFilter(filterBy: string): Product[] {
         filterBy = filterBy.toLocaleLowerCase();
-        return this.products.filter((product: IProduct) => 
+        return this.products.filter((product: Product) =>
                 product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
     }
 
     // Checks both the product name and tags
-    performFilter2(filterBy: string): IProduct[] {
+    performFilter2(filterBy: string): Product[] {
         filterBy = filterBy.toLocaleLowerCase();
-        return this.products.filter((product: IProduct) =>
+        return this.products.filter((product: Product) =>
         product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1 ||
             (product.tags && product.tags.some(tag => tag.toLocaleLowerCase().indexOf(filterBy) !== -1)));
     }
