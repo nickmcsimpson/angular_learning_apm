@@ -1,33 +1,22 @@
 import { Component } from "@angular/core";
 
 import { AuthService } from './user/auth.service';
-import {Router} from '@angular/router';
+import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {slideInAnimation} from './app.animation';
 
 // Decorator
 @Component({
   // Metadata
   selector: 'pm-root',
-    // View
-      // Linked Template
   templateUrl: './app.component.html',
-  // styleUrls: ['./app.component.css']
-    // Inline Template
-  // template: `
-  //  <nav class='navbar navbar-expand navbar-light bg-light'>
-  //  </nav>
-  //  <div class='container'>
-  //   <router-outlet></router-outlet>
-  //  </div>
-  // `,
-  // Back ticks ES 2015 multi-line string
-
-  // [routerLink] uses routing from module config
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [slideInAnimation],
 })
 export class AppComponent {
   // title = 'Angular: Getting Started';
   // Property in TypeScript
-  pageTitle: string = 'Acme Product Management';
+  pageTitle = 'Acme Product Management';
+  loading = true;
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
@@ -41,7 +30,19 @@ export class AppComponent {
   }
 
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private router: Router) {
+    router.events.subscribe((routerEvent: Event) => {
+      this.checkRouterEvent(routerEvent);
+    });
+  }
+
+  checkRouterEvent(routerEvent: Event): void {
+    if (routerEvent instanceof NavigationStart) {
+      this.loading = true;
+    }else if (routerEvent instanceof (NavigationEnd || NavigationCancel || NavigationError)) {
+      this.loading = false;
+    }
+  }
 
   logOut(): void {
     this.authService.logout();
@@ -52,5 +53,7 @@ export class AppComponent {
   }
 }
 
-//Index.html holds all the scripts for launching the angular app
-  //often the only 'Web Page' of the application hence SPA
+/*
+ Index.html holds all the scripts for launching the angular app
+ often the only 'Web Page' of the application hence SPA
+ */

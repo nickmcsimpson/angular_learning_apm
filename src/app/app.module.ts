@@ -21,6 +21,7 @@ import { ProductModule } from './products/product.module';
 import { MessageModule } from './messages/message.module';
 import {UserModule} from './user/user.module';
 import {AppRoutingModule} from './app-routing.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 // Model Decorator
 @NgModule({
@@ -38,6 +39,7 @@ import {AppRoutingModule} from './app-routing.module';
   // External Modules
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     // FormsModule, // Moved to Product Module
     HttpClientModule,
     // InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),

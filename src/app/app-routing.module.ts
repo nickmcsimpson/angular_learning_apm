@@ -14,6 +14,8 @@ const ROUTES = [
   imports: [
     // If you want to use hash style routing instead:
     // RouterModule.forRoot([], { useHash: true })
+    // For routing event logs:
+    // {enableTracing: true}
     RouterModule.forRoot(ROUTES),
   ],
   exports: [RouterModule] // Necessary so child modules have access to this too
