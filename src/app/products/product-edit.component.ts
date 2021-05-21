@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
+import {Component, OnInit, AfterViewInit, ViewChildren, ElementRef, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName, NgForm} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable, Subscription, fromEvent, merge } from 'rxjs';
@@ -12,26 +12,29 @@ import { NumberValidators } from '../shared/number.validator';
 import { GenericValidator } from '../shared/generic-validator';
 
 @Component({
-  templateUrl: './product-edit.component.html'
+  templateUrl: './product-edit.component.html',
+  styleUrls: ['./product-edit.component.css']
 })
-export class ProductEditComponent implements OnInit, AfterViewInit {
+export class ProductEditComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
+  @ViewChild(NgForm, { static: false }) productForm: NgForm;
 
   pageTitle = 'Product Edit';
   errorMessage: string;
-  productForm: FormGroup;
+  // productForm: FormGroup;
 
   product: Product;
-  private sub: Subscription;
+  private dataIsValid: { [key: string]: boolean } = {};
+  // private sub: Subscription;
 
   // Use with the generic validation message class
   displayMessage: { [key: string]: string } = {};
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
 
-  get tags(): FormArray {
-    return this.productForm.get('tags') as FormArray;
-  }
+  // get tags(): FormArray {
+  //   return this.productForm.get('tags') as FormArray;
+  // }
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
@@ -60,15 +63,15 @@ export class ProductEditComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.productForm = this.fb.group({
-      productName: ['', [Validators.required,
-                         Validators.minLength(3),
-                         Validators.maxLength(50)]],
-      productCode: ['', Validators.required],
-      starRating: ['', NumberValidators.range(1, 5)],
-      tags: this.fb.array([]),
-      description: ''
-    });
+    // this.productForm = this.fb.group({
+    //   productName: ['', [Validators.required,
+    //                      Validators.minLength(3),
+    //                      Validators.maxLength(50)]],
+    //   productCode: ['', Validators.required],
+    //   starRating: ['', NumberValidators.range(1, 5)],
+    //   tags: this.fb.array([]),
+    //   description: ''
+    // });
 
     // Using Product resolver instead of service
     //
@@ -95,29 +98,29 @@ export class ProductEditComponent implements OnInit, AfterViewInit {
   //   this.sub.unsubscribe();
   // }
 
-  ngAfterViewInit(): void {
-    // Watch for the blur event from any input element on the form.
-    // This is required because the valueChanges does not provide notification on blur
-    const controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
+  // ngAfterViewInit(): void {
+  //   // Watch for the blur event from any input element on the form.
+  //   // This is required because the valueChanges does not provide notification on blur
+  //   const controlBlurs: Observable<any>[] = this.formInputElements
+  //     .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
+  //
+  //   // Merge the blur event observable with the valueChanges observable
+  //   // so we only need to subscribe once.
+  //   merge(this.productForm.valueChanges, ...controlBlurs).pipe(
+  //     debounceTime(800)
+  //   ).subscribe(value => {
+  //     this.displayMessage = this.genericValidator.processMessages(this.productForm);
+  //   });
+  // }
 
-    // Merge the blur event observable with the valueChanges observable
-    // so we only need to subscribe once.
-    merge(this.productForm.valueChanges, ...controlBlurs).pipe(
-      debounceTime(800)
-    ).subscribe(value => {
-      this.displayMessage = this.genericValidator.processMessages(this.productForm);
-    });
-  }
-
-  addTag(): void {
-    this.tags.push(new FormControl());
-  }
-
-  deleteTag(index: number): void {
-    this.tags.removeAt(index);
-    this.tags.markAsDirty();
-  }
+  // addTag(): void {
+  //   this.tags.push(new FormControl());
+  // }
+  //
+  // deleteTag(index: number): void {
+  //   this.tags.removeAt(index);
+  //   this.tags.markAsDirty();
+  // }
 
   // getProduct(id: number): void {
   //   this.productService.getProductById(id)
@@ -126,6 +129,19 @@ export class ProductEditComponent implements OnInit, AfterViewInit {
   //       error: err => this.errorMessage = err
   //     });
   // }
+
+  validate(): void {
+    // Clear the validation object
+    this.dataIsValid = {};
+
+    //  'info' tab:
+    this.dataIsValid.info = !!(this.product.productName &&
+      this.product.productName.length >= 3 &&
+      this.product.productCode);
+    // 'tags' tab
+    this.dataIsValid.tags = !!(this.product.category &&
+      this.product.category.length >= 3);
+  }
 
   displayProduct(product: Product): void {
     if (this.productForm) {
@@ -140,13 +156,13 @@ export class ProductEditComponent implements OnInit, AfterViewInit {
     }
 
     // Update the data on the form
-    this.productForm.patchValue({
-      productName: this.product.productName,
-      productCode: this.product.productCode,
-      starRating: this.product.starRating,
-      description: this.product.description
-    });
-    this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
+    // this.productForm.patchValue({
+    //   productName: this.product.productName,
+    //   productCode: this.product.productCode,
+    //   starRating: this.product.starRating,
+    //   description: this.product.description
+    // });
+    // this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
   }
 
   deleteProduct(): void {
@@ -164,35 +180,71 @@ export class ProductEditComponent implements OnInit, AfterViewInit {
     }
   }
 
-  saveProduct(): void {
-    if (this.productForm.valid) {
-      if (this.productForm.dirty) {
-        const p = { ...this.product, ...this.productForm.value };
+  isValid(path?: string): boolean {
+    this.validate();
+    if (path) {
+      return this.dataIsValid[path];
+    }
+    return (this.dataIsValid && Object.keys(this.dataIsValid).every(d => this.dataIsValid[d] === true));
+  }
 
-        if (p.id === 0) {
-          this.productService.createProduct(p)
-            .subscribe({
-              next: () => this.onSaveComplete(),
-              error: err => this.errorMessage = err
-            });
-        } else {
-          this.productService.updateProduct(p)
-            .subscribe({
-              next: () => this.onSaveComplete(),
-              error: err => this.errorMessage = err
-            });
-        }
+  saveProduct(): void {
+    if (this.isValid()) {
+      if (this.product.id === 0) {
+        this.productService.createProduct(this.product).subscribe({
+          next: () => this.onSaveComplete(`The new ${this.product.productName} was saved`),
+          error: err => this.errorMessage = err
+        });
       } else {
-        this.onSaveComplete();
+        this.productService.updateProduct(this.product).subscribe({
+          next: () => this.onSaveComplete(`The updated ${this.product.productName} was saved`),
+          error: err => this.errorMessage = err
+        });
       }
     } else {
       this.errorMessage = 'Please correct the validation errors.';
     }
   }
 
-  onSaveComplete(): void {
-    // Reset the form to clear the flags
-    this.productForm.reset();
+  onSaveComplete(message?: string): void {
+    if (message) {
+      // this.messageService.addMessage(message);
+    }
+    // this.reset();
+
+    // Navigate back to the product list
     this.router.navigate(['/products']);
   }
+
+  // saveProduct(): void {
+  //   if (this.productForm.valid) {
+  //     if (this.productForm.dirty) {
+  //       const p = { ...this.product, ...this.productForm.value };
+  //
+  //       if (p.id === 0) {
+  //         this.productService.createProduct(p)
+  //           .subscribe({
+  //             next: () => this.onSaveComplete(),
+  //             error: err => this.errorMessage = err
+  //           });
+  //       } else {
+  //         this.productService.updateProduct(p)
+  //           .subscribe({
+  //             next: () => this.onSaveComplete(),
+  //             error: err => this.errorMessage = err
+  //           });
+  //       }
+  //     } else {
+  //       this.onSaveComplete();
+  //     }
+  //   } else {
+  //     this.errorMessage = 'Please correct the validation errors.';
+  //   }
+  // }
+
+  // onSaveComplete(): void {
+  //   // Reset the form to clear the flags
+  //   this.productForm.reset();
+  //   this.router.navigate(['/products']);
+  // }
 }
