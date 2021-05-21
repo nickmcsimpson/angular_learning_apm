@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 // import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 
 // Imports for loading & configuring the in-memory web api
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -21,6 +20,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
 import { ProductModule } from './products/product.module';
 import { MessageModule } from './messages/message.module';
 import {UserModule} from './user/user.module';
+import {AppRoutingModule} from './app-routing.module';
 
 // Model Decorator
 @NgModule({
@@ -40,24 +40,15 @@ import {UserModule} from './user/user.module';
     BrowserModule,
     // FormsModule, // Moved to Product Module
     HttpClientModule,
+    // InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
     // Order of routes matter:
       // First match win
       // More specific first
-    RouterModule.forRoot([
-      // { path: 'products', component: ProductListComponent},
-      // { path: 'products/:id',
-      //   canActivate: [ProductDetailGuard],
-      //   component: ProductDetailComponent},
-      { path: 'welcome', component: WelcomeComponent},
-      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-      { path: '**', redirectTo: 'welcome', pathMatch: 'full'}, //default behavior
-      // { path: '**', component: PageNotFoundComponent},
-    ]),
+    // MOVED: Routing to route module
     ProductModule, // AUTO import with CLI
-    // If you want to use hash style routing instead:
-    // RouterModule.forRoot([], { useHash: true })
     UserModule,
-    MessageModule
+    MessageModule,
+    AppRoutingModule // This needs to be last so child routes looked at first
   ],
   // Startup component (contains selector defined in index.html)
   bootstrap: [AppComponent]
