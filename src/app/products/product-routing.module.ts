@@ -5,18 +5,21 @@ import {ProductDetailComponent} from './product-detail.component';
 import {ProductEditGuard} from './product-edit.guard';
 import {ProductEditComponent} from './product-edit.component';
 import {RouterModule} from '@angular/router';
+import {ProductResolver} from './product-resolver.service';
 
 const ROUTES = [
   {path: 'products', component: ProductListComponent},
   {
     path: 'products/:id',
-    canActivate: [ProductDetailGuard],
-    component: ProductDetailComponent
+    canActivate: [ProductDetailGuard], // Guard and Resolver does just about the same thing
+    component: ProductDetailComponent,
+    resolve: { resolvedData: ProductResolver },
   },
   {
     path: 'products/:id/edit',
     canDeactivate: [ProductEditGuard],
-    component: ProductEditComponent
+    component: ProductEditComponent,
+    resolve: { resolvedData: ProductResolver },
   }
 ];
 

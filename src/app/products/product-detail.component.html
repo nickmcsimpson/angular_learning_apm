@@ -1,3 +1,6 @@
+<div class="alert alert-danger"
+     *ngIf="errorMessage">{{errorMessage}}
+</div>
 <div class="card" *ngIf='product'>
     <div class="card-header">
         {{pageTitle + ': ' + product.productName}}
@@ -51,10 +54,6 @@
                    [title]='product.productName'>
             </div>
           </div>
-    </div>
-
-    <div class="alert alert-danger"
-       *ngIf="errorMessage">{{errorMessage}}
     </div>
 
     <div class="card-footer">

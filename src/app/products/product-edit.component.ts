@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Observable, Subscription, fromEvent, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { Product } from './product';
+import {Product, ProductResolved} from './product';
 import { ProductService } from './product.service';
 
 import { NumberValidators } from '../shared/number.validator';
@@ -14,7 +14,7 @@ import { GenericValidator } from '../shared/generic-validator';
 @Component({
   templateUrl: './product-edit.component.html'
 })
-export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductEditComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
   pageTitle = 'Product Edit';
@@ -70,18 +70,30 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       description: ''
     });
 
+    // Using Product resolver instead of service
+    //
+    /*
+      Using static snapshot breaks when trying to go from edit -> add. The '0' breaks the logic, so we must observe and
+      react
+     */
+    this.route.data.subscribe(data => {
+      const resolvedData: ProductResolved = data.resolvedData;
+      this.errorMessage = resolvedData.error;
+      this.displayProduct(resolvedData.product);
+    });
+
     // Read the product Id from the route parameter
-    this.sub = this.route.paramMap.subscribe(
-      params => {
-        const id = +params.get('id');
-        this.getProduct(id);
-      }
-    );
+    // this.sub = this.route.paramMap.subscribe(
+    //   params => {
+    //     const id = +params.get('id');
+    //     this.getProduct(id);
+    //   }
+    // );
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //   this.sub.unsubscribe();
+  // }
 
   ngAfterViewInit(): void {
     // Watch for the blur event from any input element on the form.
@@ -107,13 +119,13 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tags.markAsDirty();
   }
 
-  getProduct(id: number): void {
-    this.productService.getProductById(id)
-      .subscribe({
-        next: (product: Product) => this.displayProduct(product),
-        error: err => this.errorMessage = err
-      });
-  }
+  // getProduct(id: number): void {
+  //   this.productService.getProductById(id)
+  //     .subscribe({
+  //       next: (product: Product) => this.displayProduct(product),
+  //       error: err => this.errorMessage = err
+  //     });
+  // }
 
   displayProduct(product: Product): void {
     if (this.productForm) {

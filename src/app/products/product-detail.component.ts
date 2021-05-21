@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Product } from './product';
+import {Product, ProductResolved} from './product';
 import { ProductService } from './product.service';
 
 // Created automatically using Angular CLI:
@@ -20,25 +20,28 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private productService: ProductService) {
+              ) {
   }
 
   ngOnInit(): void {
+    const resolvedData: ProductResolved = this.route.snapshot.data.resolvedData;
+    this.errorMessage = resolvedData.error;
+    this.onProductRetrieved(resolvedData.product);
       // + is shortcut to cast it a numeric ID
-    const param = +this.route.snapshot.paramMap.get('id');
-    if (param) {
-      const id = +param;
-      this.pageTitle += `: ${id}`;
-      this.getProduct(id);
-    }
+    // const param = +this.route.snapshot.paramMap.get('id');
+    // if (param) {
+    //   const id = +param;
+    //   this.pageTitle += `: ${id}`;
+    //   this.getProduct(id);
+    // }
   }
 
-  getProduct(id: number): void {
-    this.productService.getProductById(id).subscribe({
-      next: product =>  this.onProductRetrieved(product),
-      error: err => this.errorMessage = err
-    });
-  }
+  // getProduct(id: number): void {
+  //   this.productService.getProductById(id).subscribe({
+  //     next: product =>  this.onProductRetrieved(product),
+  //     error: err => this.errorMessage = err
+  //   });
+  // }
 
   // Routing with Code
   onBack(): void {
