@@ -14,7 +14,7 @@ import { ProductService } from './product.service';
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-  pageTitle: string = 'Product Detail';
+  pageTitle = 'Product Detail';
   product: Product;
   errorMessage: string;
 
@@ -24,12 +24,11 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //
       // + is shortcut to cast it a numeric ID
-    let param = +this.route.snapshot.paramMap.get('id');
+    const param = +this.route.snapshot.paramMap.get('id');
     if (param) {
       const id = +param;
-      this.pageTitle += `: ${id}`
+      this.pageTitle += `: ${id}`;
       this.getProduct(id);
     }
   }
@@ -43,7 +42,9 @@ export class ProductDetailComponent implements OnInit {
 
   // Routing with Code
   onBack(): void {
-    this.router.navigate(['/products'])
+    this.router.navigate(['/products'], {
+      queryParamsHandling: 'preserve'
+    });
   }
 
   onProductRetrieved(product: Product): void {

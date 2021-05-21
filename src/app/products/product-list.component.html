@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-2">Filter by:</div>
             <div class="col-md-4">
-                <!-- Two-way Data Binding 
+                <!-- Two-way Data Binding
                         () event
                         [] property
                         "Banana in a Box"
@@ -57,7 +57,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 
+                    <!--
                         Pipe could be used to filter the product
                         but these perform poorly. Instead use component
                         logic
@@ -65,21 +65,22 @@
                     <tr *ngFor="let product of filteredProducts">
                         <td>
                             <!-- Using Property Binding to reference variables -->
-                            <img *ngIf='showImage && product.imageUrl' 
+                            <img *ngIf='showImage && product.imageUrl'
                                 [src]='product.imageUrl'
                                 [title]='product.productName'
                                 [style.width.px]='imageWidth'
                                 [style.margin.px]='imageMargin'>
                         </td>
                         <td>
-                            <a [routerLink]="['/products', product.id]">
+                            <a [routerLink]="['/products', product.id]"
+                               [queryParams]="{filterBy: listFilter, showImage: showImage}">
                                 {{ product.productName }}
                             </a>
                         </td>
                         <!-- Custom Pipe -->
                         <td>{{ product.productCode | lowercase | convertToSpaces:'-'}}</td>
                         <td>{{ product.releaseDate }}</td>
-                        <!-- Pipe 
+                        <!-- Pipe
                             Example with parameters -->
                         <td>{{ product.price | currency:'USD':'symbol':'1.2-2' | lowercase }}</td>
                         <!-- <td>{{ product.starRating }}</td> -->
