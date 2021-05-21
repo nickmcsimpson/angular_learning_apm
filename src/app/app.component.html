@@ -7,12 +7,11 @@
             [routerLink]="['/welcome']">Home</a>
     </li>
     <li class='nav-item'>
-      <a class='nav-link' routerLinkActive='active' [routerLinkActiveOptions]="{exact: true}"
-            [routerLink]="['/products']">Product List</a>
+      <a class='nav-link' [routerLink]="['/products']" routerLinkActive='active'
+         [routerLinkActiveOptions]="{exact: true}">Product List</a>
     </li>
     <li class='nav-item'>
-      <a class='nav-link' routerLinkActive='active' [routerLinkActiveOptions]="{exact: true}"
-            [routerLink]="['/products/0/edit']">Add Product</a>
+      <a class='nav-link' [routerLink]="['/products/0/edit']" routerLinkActive='active'>Add Product</a>
     </li>
   </ul>
   <ul class="navbar-nav ml-auto">
