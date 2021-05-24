@@ -23,8 +23,28 @@ export class ProductEditComponent implements OnInit {
   errorMessage: string;
   // productForm: FormGroup;
 
-  product: Product;
+  // product: Product;
   private dataIsValid: { [key: string]: boolean } = {};
+
+  get isDirty(): boolean {
+    return JSON.stringify(this.originalProduct) !== JSON.stringify(this.currentProduct);
+  }
+
+  // For tracking state and using in Guard:
+  private currentProduct: Product;
+  private originalProduct: Product;
+
+  get product(): Product {
+    return this.currentProduct;
+  }
+
+  set product(value: Product) {
+    this.currentProduct = value;
+    // Clone the object to retain copy:
+    this.originalProduct = {...value};
+  }
+
+
   // private sub: Subscription;
 
   // Use with the generic validation message class
@@ -188,6 +208,12 @@ export class ProductEditComponent implements OnInit {
     return (this.dataIsValid && Object.keys(this.dataIsValid).every(d => this.dataIsValid[d] === true));
   }
 
+  reset(): void {
+    this.dataIsValid = null;
+    this.currentProduct = null;
+    this.originalProduct = null;
+  }
+
   saveProduct(): void {
     if (this.isValid()) {
       if (this.product.id === 0) {
@@ -210,7 +236,7 @@ export class ProductEditComponent implements OnInit {
     if (message) {
       // this.messageService.addMessage(message);
     }
-    // this.reset();
+    this.reset();
 
     // Navigate back to the product list
     this.router.navigate(['/products']);
