@@ -17,7 +17,7 @@ import { WelcomeComponent } from './home/welcome.component';
 import { ProductDetailGuard } from './products/product-detail.guard';
 import { PageNotFoundComponent } from './page-not-found.component';
 
-import { ProductModule } from './products/product.module';
+// import { ProductModule } from './products/product.module';
 import { MessageModule } from './messages/message.module';
 import {UserModule} from './user/user.module';
 import {AppRoutingModule} from './app-routing.module';
@@ -42,12 +42,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     // FormsModule, // Moved to Product Module
     HttpClientModule,
-    // InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
+    InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
     // Order of routes matter:
       // First match win
       // More specific first
     // MOVED: Routing to route module
-    ProductModule, // AUTO import with CLI
+    // ProductModule, // Removed for Lazy loading
     UserModule,
     MessageModule,
     AppRoutingModule // This needs to be last so child routes looked at first

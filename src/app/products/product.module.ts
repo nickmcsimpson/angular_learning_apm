@@ -41,8 +41,8 @@ import {ProductEditTagsComponent} from './product-edit/product-edit-tags.compone
     // CommonModule,
     // FormsModule,
     RouterModule,
-    ReactiveFormsModule,
-    InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
+    // ReactiveFormsModule,
+    // InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
     SharedModule,
     ProductRoutingModule,
   ]
