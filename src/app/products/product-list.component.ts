@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core'
-import { IProduct } from './product'
-import { ProductService } from './product.service'
+import { Component, OnInit } from '@angular/core';
+import { Product } from './product';
+import { ProductService } from './product.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     // selector: 'pm-products', // Not needed because we will use routing now
-    templateUrl: './product-list.component.html',//relative path
+    templateUrl: './product-list.component.html', // relative path
     // styles: ['thead {color: #337AB7;}']//Inline Styles
     styleUrls: ['./product-list.component.css']
 })
@@ -18,7 +19,7 @@ export class ProductListComponent implements OnInit {
     // listFilter: string = 'cart';
 
     // Use Getter and Setter instead
-    _listFilter: string;
+    _listFilter = '';
     get listFilter(): string {
         return this._listFilter;
     }
@@ -27,9 +28,9 @@ export class ProductListComponent implements OnInit {
         this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
     }
 
-    
-    filteredProducts: IProduct[];
-    products: IProduct[];
+
+    filteredProducts: Product[];
+    products: Product[];
 
     // Dependency Injection: Product service (verbose)
     // private _productService
@@ -37,7 +38,8 @@ export class ProductListComponent implements OnInit {
     //     this._productService = productService;
 
         // Sugar:
-    constructor(private productService: ProductService) {
+    constructor(private productService: ProductService,
+                private route: ActivatedRoute) {
         // Don't call service here, keep constructor light
             // Instead use the onInit lifecycle method
         // this.filteredProducts = this.products;
@@ -55,14 +57,17 @@ export class ProductListComponent implements OnInit {
     }
     // Change detection will automatically reevaluate the bound displays
 
-    // Interface method 
+    // Interface method
     ngOnInit(): void {
+        this.listFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
+        this.showImage = this.route.snapshot.queryParamMap.get('showImage') === 'true';
+
         // Call service to get products list
         this.productService.getProducts().subscribe({
             // Stream steps old syntax:
             next: products => {
                 this.products = products;
-                this.filteredProducts = this.products;
+                this.filteredProducts = this.performFilter(this.listFilter);
             },
             error: err => this.errorMessage = err
                 // Sugar only used if not needing to use the variable
@@ -72,18 +77,22 @@ export class ProductListComponent implements OnInit {
             // error(err) {this.errorMessage = err}
             // End function optional
         });
+
     }
 
-    performFilter(filterBy: string): IProduct[] {
-        filterBy = filterBy.toLocaleLowerCase();
-        return this.products.filter((product: IProduct) => 
-                product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+    performFilter(filterBy: string): Product[] {
+      console.log('filtering', filterBy);
+      filterBy = filterBy.toLocaleLowerCase();
+      if (this.products) {
+        return this.products.filter((product: Product) =>
+          product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+      }
     }
 
     // Checks both the product name and tags
-    performFilter2(filterBy: string): IProduct[] {
+    performFilter2(filterBy: string): Product[] {
         filterBy = filterBy.toLocaleLowerCase();
-        return this.products.filter((product: IProduct) =>
+        return this.products.filter((product: Product) =>
         product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1 ||
             (product.tags && product.tags.some(tag => tag.toLocaleLowerCase().indexOf(filterBy) !== -1)));
     }
