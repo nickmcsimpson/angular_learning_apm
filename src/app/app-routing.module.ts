@@ -12,7 +12,7 @@ const ROUTES = [
   { path: 'welcome', component: WelcomeComponent},
   {
     path: 'products', // Conflicts with module path definition
-    canActivate: [AuthGuard], // canLoad vs canActivate
+    // canActivate: [AuthGuard], // canLoad vs canActivate
     data: {preload: false},
     loadChildren: () => // Lazy loaded Products:
       import('./products/product.module').then(m => m.ProductModule),
