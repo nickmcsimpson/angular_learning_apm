@@ -9,15 +9,9 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ProductData } from './products/product-data';
 
 import { AppComponent } from './app.component';
-// import { ProductListComponent } from './products/product-list.component';
-// import { ConvertToSpacesPipe } from './shared/convert-to-spaces.pipe';
-// import { StarComponent } from './shared/star.component';
-// import { ProductDetailComponent } from './products/product-detail.component';
 import { WelcomeComponent } from './home/welcome.component';
-import { ProductDetailGuard } from './products/product-detail.guard';
 import { PageNotFoundComponent } from './page-not-found.component';
 
-// import { ProductModule } from './products/product.module';
 import { MessageModule } from './messages/message.module';
 import {UserModule} from './user/user.module';
 import {AppRoutingModule} from './app-routing.module';
@@ -32,7 +26,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     // ProductListComponent,
     // ConvertToSpacesPipe,
     // StarComponent,
-    // ProductDetailComponent, //Added automatically with Angular CLI creation
     WelcomeComponent,
     PageNotFoundComponent,
   ],
@@ -43,9 +36,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     // FormsModule, // Moved to Product Module
     HttpClientModule,
     InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
-    // Order of routes matter:
-      // First match win
-      // More specific first
     // MOVED: Routing to route module
     // ProductModule, // Removed for Lazy loading
     UserModule,

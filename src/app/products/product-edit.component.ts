@@ -83,15 +83,6 @@ export class ProductEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.productForm = this.fb.group({
-    //   productName: ['', [Validators.required,
-    //                      Validators.minLength(3),
-    //                      Validators.maxLength(50)]],
-    //   productCode: ['', Validators.required],
-    //   starRating: ['', NumberValidators.range(1, 5)],
-    //   tags: this.fb.array([]),
-    //   description: ''
-    // });
 
     // Using Product resolver instead of service
     //
@@ -104,19 +95,7 @@ export class ProductEditComponent implements OnInit {
       this.errorMessage = resolvedData.error;
       this.displayProduct(resolvedData.product);
     });
-
-    // Read the product Id from the route parameter
-    // this.sub = this.route.paramMap.subscribe(
-    //   params => {
-    //     const id = +params.get('id');
-    //     this.getProduct(id);
-    //   }
-    // );
   }
-
-  // ngOnDestroy(): void {
-  //   this.sub.unsubscribe();
-  // }
 
   // ngAfterViewInit(): void {
   //   // Watch for the blur event from any input element on the form.
@@ -131,23 +110,6 @@ export class ProductEditComponent implements OnInit {
   //   ).subscribe(value => {
   //     this.displayMessage = this.genericValidator.processMessages(this.productForm);
   //   });
-  // }
-
-  // addTag(): void {
-  //   this.tags.push(new FormControl());
-  // }
-  //
-  // deleteTag(index: number): void {
-  //   this.tags.removeAt(index);
-  //   this.tags.markAsDirty();
-  // }
-
-  // getProduct(id: number): void {
-  //   this.productService.getProductById(id)
-  //     .subscribe({
-  //       next: (product: Product) => this.displayProduct(product),
-  //       error: err => this.errorMessage = err
-  //     });
   // }
 
   validate(): void {
@@ -174,15 +136,6 @@ export class ProductEditComponent implements OnInit {
     } else {
       this.pageTitle = `Edit Product: ${this.product.productName}`;
     }
-
-    // Update the data on the form
-    // this.productForm.patchValue({
-    //   productName: this.product.productName,
-    //   productCode: this.product.productCode,
-    //   starRating: this.product.starRating,
-    //   description: this.product.description
-    // });
-    // this.productForm.setControl('tags', this.fb.array(this.product.tags || []));
   }
 
   deleteProduct(): void {
@@ -241,36 +194,4 @@ export class ProductEditComponent implements OnInit {
     // Navigate back to the product list
     this.router.navigate(['/products']);
   }
-
-  // saveProduct(): void {
-  //   if (this.productForm.valid) {
-  //     if (this.productForm.dirty) {
-  //       const p = { ...this.product, ...this.productForm.value };
-  //
-  //       if (p.id === 0) {
-  //         this.productService.createProduct(p)
-  //           .subscribe({
-  //             next: () => this.onSaveComplete(),
-  //             error: err => this.errorMessage = err
-  //           });
-  //       } else {
-  //         this.productService.updateProduct(p)
-  //           .subscribe({
-  //             next: () => this.onSaveComplete(),
-  //             error: err => this.errorMessage = err
-  //           });
-  //       }
-  //     } else {
-  //       this.onSaveComplete();
-  //     }
-  //   } else {
-  //     this.errorMessage = 'Please correct the validation errors.';
-  //   }
-  // }
-
-  // onSaveComplete(): void {
-  //   // Reset the form to clear the flags
-  //   this.productForm.reset();
-  //   this.router.navigate(['/products']);
-  // }
 }

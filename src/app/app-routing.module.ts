@@ -5,6 +5,9 @@ import {PageNotFoundComponent} from './page-not-found.component';
 import {AuthGuard} from './user/auth.guard';
 import {SelectiveStrategy} from './selective-strategy.service';
 
+// Order of routes matter:
+// First match win
+// More specific first
 const ROUTES = [
   { path: 'welcome', component: WelcomeComponent},
   {

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core'
-import { Product } from './product'
-import { ProductService } from './product.service'
+import { Component, OnInit } from '@angular/core';
+import { Product } from './product';
+import { ProductService } from './product.service';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
     // selector: 'pm-products', // Not needed because we will use routing now
-    templateUrl: './product-list.component.html',//relative path
+    templateUrl: './product-list.component.html', // relative path
     // styles: ['thead {color: #337AB7;}']//Inline Styles
     styleUrls: ['./product-list.component.css']
 })
