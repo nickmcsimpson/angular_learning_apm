@@ -27,7 +27,10 @@
         <div class="row">
           <pm-criteria class="col-md-10" #filterCriteria
                        [displayDetail]="includeDetail"
-                       [hitCount]="filteredProducts?.length"></pm-criteria>
+                       [hitCount]="filteredProducts?.length"
+                        (valueChanged)="onValueChanged($event)" >
+
+          </pm-criteria>
 
         </div>
         <div class="row">

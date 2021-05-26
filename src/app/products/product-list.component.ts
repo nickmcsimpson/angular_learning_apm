@@ -86,19 +86,23 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       this.parentListFilter = this.filterComponent.listFilter;
     }
 
-  performFilter(filterBy?: string): Product[] {
-      console.log('filtering', filterBy);
-      if (filterBy) {
-        filterBy = filterBy.toLocaleLowerCase();
-        if (this.products) {
-          return this.products.filter((product: Product) =>
-            product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
-        }
-      } else {
-        this.filteredProducts = this.products;
-      }
-
+    onValueChanged(event: string): void {
+        this.performFilter(event);
     }
+
+    performFilter(filterBy?: string): void {
+        console.log('filtering', filterBy);
+        if (filterBy) {
+          filterBy = filterBy.toLocaleLowerCase();
+          if (this.products) {
+            this.filteredProducts = this.products.filter((product: Product) =>
+              product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+          }
+        } else {
+          this.filteredProducts = this.products;
+        }
+
+      }
 
     // Checks both the product name and tags
     performFilter2(filterBy: string): Product[] {
