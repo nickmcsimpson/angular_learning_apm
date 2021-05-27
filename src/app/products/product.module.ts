@@ -45,7 +45,7 @@ import {ProductShellDetailComponent} from './product-shell/product-shell-detail.
   imports: [
     // Moved to Shared
     // CommonModule,
-    FormsModule,
+    // FormsModule,
     RouterModule,
     ReactiveFormsModule,
     // InMemoryWebApiModule.forRoot(ProductData, { delay: 1000 }),
