@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { Product } from './product';
 import { ProductService } from './product.service';
 import {ActivatedRoute} from '@angular/router';
+import {CriteriaComponent} from '../shared/criteria/criteria.component';
 
 @Component({
     // selector: 'pm-products', // Not needed because we will use routing now
@@ -9,25 +10,26 @@ import {ActivatedRoute} from '@angular/router';
     // styles: ['thead {color: #337AB7;}']//Inline Styles
     styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, AfterViewInit {
+    // Get elements from the Template:
+    // @ViewChildren('filteredElement, nameElement')
+    // @ViewChildren(NgModel)
+    // inputElementRefs: QueryList<NgModel>;
+    /*
+      Using *ngIf with NgModels could overcomplicate the logic of subscribing and make it necessary to have
+      a subscription variable to check and set.
+     */
+
     // TypeScript can infer type from these pre-defined variables
     pageTitle: string = 'Product List!';
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = false;
     errorMessage: string;
-    // listFilter: string = 'cart';
 
-    // Use Getter and Setter instead
-    _listFilter = '';
-    get listFilter(): string {
-        return this._listFilter;
-    }
-    set listFilter(value: string) {
-        this._listFilter = value;
-        this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
-    }
-
+    includeDetail = true;
+    @ViewChild(CriteriaComponent) filterComponent: CriteriaComponent;
+    parentListFilter: string;
 
     filteredProducts: Product[];
     products: Product[];
@@ -59,7 +61,7 @@ export class ProductListComponent implements OnInit {
 
     // Interface method
     ngOnInit(): void {
-        this.listFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
+        this.parentListFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
         this.showImage = this.route.snapshot.queryParamMap.get('showImage') === 'true';
 
         // Call service to get products list
@@ -67,7 +69,7 @@ export class ProductListComponent implements OnInit {
             // Stream steps old syntax:
             next: products => {
                 this.products = products;
-                this.filteredProducts = this.performFilter(this.listFilter);
+                this.performFilter(this.parentListFilter);
             },
             error: err => this.errorMessage = err
                 // Sugar only used if not needing to use the variable
@@ -80,14 +82,27 @@ export class ProductListComponent implements OnInit {
 
     }
 
-    performFilter(filterBy: string): Product[] {
-      console.log('filtering', filterBy);
-      filterBy = filterBy.toLocaleLowerCase();
-      if (this.products) {
-        return this.products.filter((product: Product) =>
-          product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
-      }
+    ngAfterViewInit(): void {
+      this.parentListFilter = this.filterComponent.listFilter;
     }
+
+    onValueChanged(event: string): void {
+        this.performFilter(event);
+    }
+
+    performFilter(filterBy?: string): void {
+        console.log('filtering', filterBy);
+        if (filterBy) {
+          filterBy = filterBy.toLocaleLowerCase();
+          if (this.products) {
+            this.filteredProducts = this.products.filter((product: Product) =>
+              product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+          }
+        } else {
+          this.filteredProducts = this.products;
+        }
+
+      }
 
     // Checks both the product name and tags
     performFilter2(filterBy: string): Product[] {

@@ -14,29 +14,36 @@
             for...in for properties (index) Not angular
     -->
 
+    <!-- Two-way Data Binding
+              () event
+              [] property
+              "Banana in a Box"
+          Angular Directive ngModel part of FormsModule (AppModule Imports)
+      -->
+
 
     <div class="card-body">
+<!--        Filter by Title-->
         <div class="row">
-            <div class="col-md-2">Filter by:</div>
-            <div class="col-md-4">
-                <!-- Two-way Data Binding
-                        () event
-                        [] property
-                        "Banana in a Box"
-                    Angular Directive ngModel part of FormsModule (AppModule Imports)
-                -->
-                <input type="text"
-                    [(ngModel)]='listFilter'/>
-            </div>
+          <pm-criteria class="col-md-10" #filterCriteria
+                       [displayDetail]="includeDetail"
+                       [hitCount]="filteredProducts?.length"
+                        (valueChanged)="onValueChanged($event)" >
+
+          </pm-criteria>
+
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <h4>Filtered By: {{listFilter}}</h4>
-            </div>
+          <div class="col-md-2">{{includeDetail ? 'Hide' : 'Show'}} Details:</div>
+          <div class="col-md-2">
+            <input type="checkbox" [(ngModel)]="includeDetail">
+          </div>
         </div>
+
+
         <div class="table-responsive">
             <table class="table"
-                *ngIf='products && products.length'>
+                *ngIf='products?.length'>
                 <thead>
                     <tr>
                         <td>
@@ -73,7 +80,7 @@
                         </td>
                         <td>
                             <a [routerLink]="['/products', product.id]"
-                               [queryParams]="{filterBy: listFilter, showImage: showImage}">
+                               [queryParams]="{filterBy: parentListFilter, showImage: showImage}">
                                 {{ product.productName }}
                             </a>
                         </td>

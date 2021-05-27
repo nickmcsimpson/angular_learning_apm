@@ -9,6 +9,7 @@ import {ProductResolver} from './product-resolver.service';
 import {ProductEditTagsComponent} from './product-edit/product-edit-tags.component';
 import {ProductEditInfoComponent} from './product-edit/product-edit-info.component';
 import {AuthGuard} from '../user/auth.guard';
+import {ProductShellComponent} from './product-shell/product-shell.component';
 // import {ProductEditComponent} from './product-edit/product-edit.component';
 
 /*
@@ -24,7 +25,7 @@ import {AuthGuard} from '../user/auth.guard';
 const ROUTES = [
   {
     path: '',
-    component: ProductListComponent
+    component: ProductShellComponent
   },
   {
     path: ':id',
